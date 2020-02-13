@@ -1,47 +1,52 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "../main.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+int test_build_matrices_function()
+{
+    return d.m_1[0].line != 0 && d.m_2[0].line != 0 && d.m_result[0].line != 0;
+}
 
-#include <sys/mman.h>
+int test_pending_function()
+{
+    size_t size = d.m_result[0].column * d.m_result[0].line;
+    for (long int i = 0; i < size; i++)
+        if (d.pending[i] == 0)
+            return 0;
+    return 1;
+}
 
-#include <errno.h>
-
-#define I_ASSERT_P(assertion, msg) \
-    if (assertion)                 \
-    {                              \
-        perror(msg);               \
-        exit(EXIT_FAILURE);        \
-    }
-
-#define I_ASSERT_I(assertion, msg) \
-    if (assertion)                 \
-    {                              \
-        fprintf(stderr, msg);      \
-        exit(EXIT_FAILURE);        \
-    }
+int test_destroy_matrices_function()
+{
+    return d.m_1 == NULL && d.m_2 == NULL && d.m_result == NULL;
+}
 
 int main(int argc, char *argv[])
 {
-    I_ASSERT_I(argc < 2, "Usage: ./prog file_name");
-    int fd;
-    void *m_mapped;
-    struct stat f_stat;
+    int result = build_matrices(&d, argv[1]);
 
-    fd = open(argv[1], O_RDONLY);
-    I_ASSERT_P(fd == -1, "Error file descriptor");
+    printf("Test build:   %9s", "");
+    I_ASSERT_P(result == -1, "build_matrice");
+    I_ASSERT_I(result == -2, "build_matrice");
 
-    fstat(fd, &f_stat);
+    if (test_build_matrices_function() != 1)
+        printf("NO\n");
+    else
+        printf("OK\n");
 
-    m_mapped = mmap(NULL, f_stat.st_size, PROT_READ, MAP_SHARED, fd, 0);
-    I_ASSERT_P(m_mapped == MAP_FAILED, "Error mmap");
+    d.pending = (int *)malloc(sizeof(int) * (d.m_result[0].column * d.m_result[0].line));
+    printf("Test pending: %9s", "");
+    init_pending(&d, 0);
+    if (test_pending_function() != 1)
+        printf("NO\n");
+    else
+        printf("OK\n");
 
-    printf("%s\n", m_mapped);
+    printf("Test destroy: %9s", "");
+    destroy_matrices(&d);
+    if (test_destroy_matrices_function() != 1)
+        printf("NO\n");
+    else
+        printf("OK\n");
 
-    munmap(m_mapped, f_stat.st_size);
-    close(fd);
+    free(d.pending);
     return EXIT_SUCCESS;
 }
