@@ -1,5 +1,25 @@
 #include "main.h"
 
+int get_pending(data *d, int index)
+{
+    int count = 0;
+    /** 
+     * ------------------------------------------------------------------------------
+     * Récupération de la taille de la mztice en cours. 
+     * ------------------------------------------------------------------------------
+    */
+    long int size = d->m_result[index].column * d->m_result[index].line;
+
+    /** 
+     * ------------------------------------------------------------------------------
+     * Somme de valeur, cette valeur réprésente le nombre de thread restant.
+     * ------------------------------------------------------------------------------
+    */
+    for (long int i = 0; i < size; i++)
+        count += d->pending[i];
+    return count;
+}
+
 void init_pending(data *d, int index)
 {
     /** 

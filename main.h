@@ -190,4 +190,15 @@ int destroy_matrices(data *d);
 */
 void init_pending(data *d, int index);
 
+/** 
+ * --------------------------------------------------------------------------------------
+ * Récupère le nombre de thread en attende.
+ * -------------------------------------------------------------------------------------- 
+ * @param data *d Données par laquel récupèrer les threads en attende.
+ * -------------------------------------------------------------------------------------- 
+ * @return int Nombre de thread en attende.
+ * -------------------------------------------------------------------------------------- 
+*/
+int get_pending(data *d, int index);
+
 #endif
