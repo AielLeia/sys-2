@@ -54,6 +54,14 @@ int main(int argc, char *argv[])
     else
         printf("OK\n");
 
+    int line = 0;
+    int column = 0;
+    long int result_mat = 0;
+    for (long int _i = 0; _i < d.m_1[0].column; _i++)
+        result_mat += (d.m_1[0].mat[line][_i] * d.m_2[0].mat[_i][column]);
+
+    printf("%ld\n", result_mat);
+
     printf("Test destroy: %9s", "");
     destroy_matrices(&d);
     if (test_destroy_matrices_function() != 1)
