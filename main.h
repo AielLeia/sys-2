@@ -143,6 +143,24 @@ typedef struct _data
 } data;
 
 /** 
+ * ------------------------------------------------------------------------------------------
+ * Données envoyée au thread afin d'effectuer le traitement.
+ * ------------------------------------------------------------------------------------------
+ * @property int    index_matrix    L'index dans le tableaux de matrice.
+ * @property int    index_pending   L'index dans le tableaux des attendes.
+ * @property int    i               Données sur la ligne.
+ * @property int    j               Données sur la colonne.
+ * ------------------------------------------------------------------------------------------
+*/
+typedef struct _thread_data
+{
+    int index_matrix;
+    int index_pending;
+    int i;
+    int j;
+} thread_data;
+
+/** 
  * --------------------------------------------------------------------------------------
  * Variable partagées par les differents threads.
  * --------------------------------------------------------------------------------------
@@ -197,8 +215,19 @@ void init_pending(data *d, int index);
  * @param data *d Données par laquel récupèrer les threads en attende.
  * -------------------------------------------------------------------------------------- 
  * @return int Nombre de thread en attende.
- * -------------------------------------------------------------------------------------- 
+ * --------------------------------------------------------------------------------------
 */
 int get_pending(data *d, int index);
+
+/** 
+ * --------------------------------------------------------------------------------------
+ * Fonction exécuter par les threads.
+ * --------------------------------------------------------------------------------------
+ * @param void  *data Données envoyer au thread. (Içi la struture thread_data)
+ * --------------------------------------------------------------------------------------
+ * @return void* Renvoie aucun resultat. 
+ * --------------------------------------------------------------------------------------
+*/
+void *run(void *data);
 
 #endif

@@ -1,5 +1,47 @@
 #include "main.h"
 
+void *run(void *data)
+{
+    /** 
+     * ------------------------------------------------------------------------------
+     * Récuperation de la données
+     * ------------------------------------------------------------------------------
+    */
+    thread_data *t_data = (thread_data *)data;
+    fprintf(stderr, "Begin, mat(%d)\n", t_data->index_pending);
+
+    /** 
+     * ------------------------------------------------------------------------------
+     * Boucle de parcours de toute les matrices lue dans le fichier.
+     * ------------------------------------------------------------------------------
+    */
+    // Vérification de la condition de demarrage
+    I_ASSERT_P(pthread_mutex_lock(&d.mutex) != 0, "pthread_mutex_lock(&d.mutex)");
+    while (d.pending[t_data->index_pending] == 0 || d.state != STATE_START)
+        I_ASSERT_P(pthread_cond_wait(&d.cond, &d.mutex) != 0, "pthread_cond_wait(&d.cond, &d.mutex)");
+    I_ASSERT_P(pthread_mutex_unlock(&d.mutex) != 0, "pthread_mutex_unlock(&d.mutex)");
+
+    // Demarrage des calcules.
+    fprintf(stderr, "-> mat(%d)\n", t_data->index_pending);
+    int line = t_data->i;
+    int column = t_data->j;
+    long int result = 0;
+    for (long int _i = 0; _i < d.m_1[t_data->index_matrix].line; _i++)
+        result += d.m_1[t_data->index_matrix].mat[line][_i] * d.m_2[t_data->index_matrix].mat[_i][column];
+    d.m_result[t_data->index_matrix].mat[line][column] = result;
+    d.pending[t_data->index_pending] = 0;
+    fprintf(stderr, "<- mat(%d): %ld\n", t_data->index_pending, result);
+
+    if (get_pending(&d, t_data->index_matrix) == 0)
+        d.state = STATE_PRINT;
+
+    I_ASSERT_P(pthread_mutex_lock(&d.mutex) != 0, "pthread_mutex_lock(&d.mutex)");
+    I_ASSERT_P(pthread_cond_broadcast(&d.cond) != 0, "pthread_cond_broadcast(&d.cond)");
+    I_ASSERT_P(pthread_mutex_unlock(&d.mutex) != 0, "pthread_mutex_unlock(&d.mutex)");
+
+    return NULL;
+}
+
 int get_pending(data *d, int index)
 {
     int count = 0;
