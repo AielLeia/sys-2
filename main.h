@@ -173,4 +173,21 @@ int build_matrices(data *d, const char *builder);
 */
 int destroy_matrices(data *d);
 
+/** 
+ * --------------------------------------------------------------------------------------
+ * Initialiser permettant de savoir si un thread est autorisé a effectuée un
+ * un calcule sur les matrices.
+ * Le data est la struture dans lequel s'y trouve le tableaux permettant de determiné
+ * si un thread est autorisée ou non a effectuée un calcule.
+ * L'index répresente la position dans le tableau des matrice resultat afin de
+ * derteminé la taille du tableau initiale.
+ * --------------------------------------------------------------------------------------
+ * @param data  *d      Données a initialiser.
+ * @param int   index   Emplacement des données de la matrice resultat.
+ * --------------------------------------------------------------------------------------
+ * @return void
+ * -------------------------------------------------------------------------------------- 
+*/
+void init_pending(data *d, int index);
+
 #endif

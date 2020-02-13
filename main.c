@@ -1,15 +1,48 @@
 #include "main.h"
 
+void init_pending(data *d, int index)
+{
+    /** 
+     * ------------------------------------------------------------------------------
+     * Récupération de la taille de la prochaine matrice. 
+     * ------------------------------------------------------------------------------
+    */
+    long int size = d->m_result[index].column * d->m_result[index].line;
+
+    /** 
+     * ------------------------------------------------------------------------------
+     * Initialisation du tableau à 1.
+     * ------------------------------------------------------------------------------
+    */
+    for (long int i = 0; i < size; i++)
+        d->pending[i] = 1;
+}
+
 int build_matrices(data *d, const char *builder)
 {
+    /** 
+     * ------------------------------------------------------------------------------
+     * Ouverture du fichier.
+     * ------------------------------------------------------------------------------
+    */
     int fd = open(builder, O_RDONLY);
     if (fd == -1)
         return -1;
 
+    /** 
+     * ------------------------------------------------------------------------------
+     * Récupération des données rélative au fichier ouvert.
+     * ------------------------------------------------------------------------------
+    */
     struct stat f_stat;
     if (fstat(fd, &f_stat) == -1)
         return -1;
 
+    /** 
+     * ------------------------------------------------------------------------------
+     * Mapping des données du fichier lue.
+     * ------------------------------------------------------------------------------
+    */
     void *m_mapped = mmap(NULL, f_stat.st_size, PROT_READ, MAP_SHARED, fd, 0);
     if (m_mapped == MAP_FAILED)
         return -1;
