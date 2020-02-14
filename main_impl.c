@@ -105,7 +105,7 @@ int build_matrices(data *d, const char *builder)
      * Mapping des données du fichier lue.
      * ------------------------------------------------------------------------------
     */
-    void *m_mapped = mmap(NULL, f_stat.st_size, PROT_READ, MAP_SHARED, fd, 0);
+    void *m_mapped = mmap(NULL, f_stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (m_mapped == MAP_FAILED)
         return -1;
 
@@ -201,6 +201,31 @@ int build_matrices(data *d, const char *builder)
     munmap(m_mapped, f_stat.st_size);
     close(fd);
     return 0;
+}
+
+void write_i(data *d)
+{
+    int fd = open("result.txt", O_WRONLY | O_CREAT | O_APPEND, 00755);
+    I_ASSERT_P(fd == -1, "open(\"result.txt\", O_WRONLY | O_APPEND | O_CREAT, 00755)");
+
+    for (long int _i = 0; _i < d->nb_iteration; _i++)
+    {
+        char file_text[256];
+        sprintf(file_text, "Resultat %ld\n", _i);
+        I_ASSERT_P(write(fd, file_text, strlen(file_text)) != strlen(file_text), "write(fd, file_text, strlen(file_text))");
+        for (long int _j = 0; _j < d->m_result[_i].line; _j++)
+        {
+            for (long int _k = 0; _k < d->m_result[_i].column; _k++)
+            {
+                sprintf(file_text, "%ld ", d->m_result[_i].mat[_j][_k]);
+                I_ASSERT_P(write(fd, file_text, strlen(file_text)) != strlen(file_text), "write(fd, file_text, strlen(file_text)) ");
+            }
+            sprintf(file_text, "\n");
+            I_ASSERT_P(write(fd, file_text, strlen(file_text)) != strlen(file_text), "write(fd, file_text, strlen(file_text)) ");
+        } 
+        sprintf(file_text, "\n\n");
+        I_ASSERT_P(write(fd, file_text, strlen(file_text)) != strlen(file_text), "write(fd, file_text, strlen(file_text)) ");
+    }
 }
 
 int destroy_matrices(data *d)
