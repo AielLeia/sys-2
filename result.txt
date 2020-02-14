@@ -3,7 +3,7 @@ Resultat 0
 47 54 61 
 
 
-Resultat 1
+Resultat 1 
 15 18 21 24 27 30 
 47 58 69 80 91 102 
 

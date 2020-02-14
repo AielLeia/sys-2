@@ -69,7 +69,10 @@ int main(int argc, char *argv[])
         free(mat_th);
     }
 
+<<<<<<< HEAD
     write_i(&d);
+=======
+>>>>>>> dfb3b58aea55af01541ab9810340f04f363a2963
     I_ASSERT_P(pthread_cond_destroy(&d.cond) != 0, "pthread_cond_destroy(&d.cond)");
     I_ASSERT_P(pthread_mutex_destroy(&d.mutex) != 0, "pthread_mutex_destroy(&d.mutex)");
     destroy_matrices(&d);

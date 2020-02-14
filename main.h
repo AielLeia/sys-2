@@ -237,6 +237,7 @@ int get_pending(data *d, int index);
 */
 void *run(void *data);
 
+<<<<<<< HEAD
 /** 
  * --------------------------------------------------------------------------------------
  * Écrit dans le fichier les calcules éffectués par les threads.
@@ -246,4 +247,6 @@ void *run(void *data);
 */
 void write_i(data *d);
 
+=======
+>>>>>>> dfb3b58aea55af01541ab9810340f04f363a2963
 #endif
