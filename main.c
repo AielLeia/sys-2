@@ -39,6 +39,11 @@ int main(int argc, char *argv[])
             }
         }
 
+        for (long int _i = 0; _i < size; _i++)
+        {
+            printf("matrix(%ld), pending(%ld), i(%ld), j(%ld)\n", t_data[_i]->index_matrix, t_data[_i]->index_pending, t_data[_i]->j, t_data[_i]->i);
+        }
+
         d.state = STATE_WAIT;
         init_pending(&d, i);
         for (long int th = 0; th < size; th++)

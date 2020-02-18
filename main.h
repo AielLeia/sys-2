@@ -161,10 +161,10 @@ typedef struct _data
 */
 typedef struct _thread_data
 {
-    int index_matrix;
-    int index_pending;
-    int i;
-    int j;
+    long int index_matrix;
+    long int index_pending;
+    long int i;
+    long int j;
 } thread_data;
 
 /** 

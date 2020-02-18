@@ -26,7 +26,7 @@ void *run(void *data)
     int line = t_data->i;
     int column = t_data->j;
     long int result = 0;
-    for (long int _i = 0; _i < d.m_1[t_data->index_matrix].line; _i++)
+    for (long int _i = 0; _i < d.m_1[t_data->index_matrix].column; _i++)
         result += d.m_1[t_data->index_matrix].mat[line][_i] * d.m_2[t_data->index_matrix].mat[_i][column];
     d.m_result[t_data->index_matrix].mat[line][column] = result;
     d.pending[t_data->index_pending] = 0;
