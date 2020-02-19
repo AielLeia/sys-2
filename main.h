@@ -1,3 +1,27 @@
+/** 
+ * --------------------------------------------------------------------------------------
+ * Dans le fichier vous trouverez essentiellement 4 catègorie de code avec leur
+ * documentation:
+ * 
+ * -> Inclusion des différents headers nécessaires au bon fonctionnement du programme
+ *    avec les raisons d'inclusion de celles çi.
+ * 
+ * -> Définition de deux marcos afin d'allèger le code côté implementation et avoir
+ *    une bonne lisibilité.
+ * 
+ * -> Définition des strutures nécessaires au bon fonctionnement du programme
+ *    et du pourquoi ces strutures existe dans le codé et leur utilité dans le programme
+ *    avec une documentation.
+ * 
+ * -> Définition des prototypes des fonctions permettant de resoudre une problèmatique
+ *    parmit les problèmatiques de l'éxercice.
+ * 
+ * Le code source est disponible sur github.
+ * --------------------------------------------------------------------------------------
+ * @author Ismaël MOHAMED BOUH
+ * @github https://github.com/AielLeia/sys-2
+ * --------------------------------------------------------------------------------------
+*/
 #ifndef __MAIN__H__
 #define __MAIN__H__
 
@@ -39,7 +63,8 @@
 
 /** 
  * --------------------------------------------------------------------------------------
- * Inclusion de la bibliothèque permettant la manipulation de la fonction fstat.
+ * Inclusion de la bibliothèque permettant la manipulation de la fonction fstat pour 
+ * obtenir certaines propriétés d'un fichier.
  * --------------------------------------------------------------------------------------
 */
 #include <sys/stat.h>
@@ -62,7 +87,9 @@
 /** 
  * --------------------------------------------------------------------------------------
  * Vérifie les conditions associées à des erreurs qui serons spéficier par la 
- * constante errno.
+ * constante errno, par exemple open revoie -1 en cas d'erreur le code d'erreur
+ * est spéficier dans la constante errno et peut être afficher par la fonction
+ * perror.
  * --------------------------------------------------------------------------------------
  * @param boolean Condition à vérifier.
  * @param char    Message en cas d'erreue.
@@ -95,7 +122,7 @@
  * --------------------------------------------------------------------------------------
  * Enumère les differents étapes de calcule d'une matrice.
  * --------------------------------------------------------------------------------------
- * STATE_WAIT -> Attende d'initialisation des données
+ * STATE_WAIT  -> Attende d'initialisation des données
  * STATE_START -> Les threads de calcule démarre.
  * STATE_PRINT -> Affichage des données calculer par les threads.
  * --------------------------------------------------------------------------------------
@@ -113,7 +140,7 @@ typedef enum _state
  * --------------------------------------------------------------------------------------
  * @property long int line      Nombre de ligne de la matrice.
  * @property long int column    Nombre de colonne de la matrice.
- * @property long int **mat     Valeur de la matrice.
+ * @property long int **mat     Contenue de la matrice.
  * --------------------------------------------------------------------------------------
 */
 typedef struct _matrix
@@ -178,6 +205,8 @@ data d;
  * --------------------------------------------------------------------------------------
  * Construit les matrices à partir d'un fichier de construction respectant
  * un certain format.
+ * Cette fonction charge en une fois le contenue du fichier et les stockes
+ * dans la structure partagée par les différents threads.
  * --------------------------------------------------------------------------------------
  * @param data *d           Données à construire.
  * @param char *builder     Fichier a partir duquel les matrices sont construite.
@@ -200,10 +229,10 @@ int destroy_matrices(data *d);
 
 /** 
  * --------------------------------------------------------------------------------------
- * Initialiser permettant de savoir si un thread est autorisé a effectuée un
+ * Initialisation permettant de savoir si un thread est autorisé a effectuée un
  * un calcule sur les matrices.
- * Le data est la struture dans lequel s'y trouve le tableaux permettant de determiné
- * si un thread est autorisée ou non a effectuée un calcule.
+ * Le paramètre data est la struture dans lequel s'y trouve le tableaux permettant de 
+ * determiné si un thread est autorisée ou non a effectuée un calcule.
  * L'index répresente la position dans le tableau des matrice resultat afin de
  * derteminé la taille du tableau initiale.
  * --------------------------------------------------------------------------------------

@@ -51,8 +51,6 @@ int main(int argc, char *argv[])
             I_ASSERT_P(pthread_create(&mat_th[th], NULL, run, (void *)t_data[th]) != 0, "pthread_create(&mat_th[i], NULL, run, (void *)&t_data[i])");
         }
 
-        //for (long int th = 0; th < size; th++)
-        //{
         d.state = STATE_START;
         pthread_cond_broadcast(&d.cond);
 
@@ -62,7 +60,6 @@ int main(int argc, char *argv[])
         I_ASSERT_P(pthread_mutex_unlock(&d.mutex) != 0, "pthread_mutex_unlock(&d.mutex)");
 
         fprintf(stderr, "IETRATION %ld : th\n", i);
-        //}
 
         for (long int th = 0; th < size; th++)
             I_ASSERT_P(pthread_join(mat_th[th], NULL) != 0, "pthread_join(&mat_th[th], NULL)");
