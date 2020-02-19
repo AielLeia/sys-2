@@ -4,6 +4,7 @@ int main(int argc, char *argv[])
 {
     I_ASSERT_I(argc < 2, "Usage: ./prog filename");
 
+    struct timeval tv_start, tv_end;
     const char *filename = argv[1];
     int build = build_matrices(&d, filename);
 
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
 
     I_ASSERT_P(pthread_mutex_init(&d.mutex, NULL) != 0, "pthread_mutex_init(&d.mutex, NULL)");
     I_ASSERT_P(pthread_cond_init(&d.cond, NULL) != 0, "pthread_cond_init(&d.cond, NULL)");
+    gettimeofday(&tv_start, NULL);
     for (long int i = 0; i < d.nb_iteration; i++)
     {
         long int size = d.m_result[i].column * d.m_result[i].line;
@@ -39,11 +41,6 @@ int main(int argc, char *argv[])
             }
         }
 
-        for (long int _i = 0; _i < size; _i++)
-        {
-            printf("matrix(%ld), pending(%ld), i(%ld), j(%ld)\n", t_data[_i]->index_matrix, t_data[_i]->index_pending, t_data[_i]->j, t_data[_i]->i);
-        }
-
         d.state = STATE_WAIT;
         init_pending(&d, i);
         for (long int th = 0; th < size; th++)
@@ -59,8 +56,6 @@ int main(int argc, char *argv[])
             I_ASSERT_P(pthread_cond_wait(&d.cond, &d.mutex) != 0, "pthread_cond_wait(&d.cond, &d.mutex)");
         I_ASSERT_P(pthread_mutex_unlock(&d.mutex) != 0, "pthread_mutex_unlock(&d.mutex)");
 
-        fprintf(stderr, "IETRATION %ld : th\n", i);
-
         for (long int th = 0; th < size; th++)
             I_ASSERT_P(pthread_join(mat_th[th], NULL) != 0, "pthread_join(&mat_th[th], NULL)");
         for (long int _i = 0; _i < size; _i++)
@@ -70,7 +65,9 @@ int main(int argc, char *argv[])
         free(t_data);
         free(mat_th);
     }
-
+    gettimeofday(&tv_end, NULL);
+    long micros = (((tv_end.tv_sec - tv_start.tv_sec) * 1000000) + tv_end.tv_usec) - tv_start.tv_usec;
+    printf("Time elapsed: %ld micros\n", micros);
     write_i(&d);
     I_ASSERT_P(pthread_cond_destroy(&d.cond) != 0, "pthread_cond_destroy(&d.cond)");
     I_ASSERT_P(pthread_mutex_destroy(&d.mutex) != 0, "pthread_mutex_destroy(&d.mutex)");

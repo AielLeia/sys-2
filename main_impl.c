@@ -8,7 +8,6 @@ void *run(void *data)
      * ------------------------------------------------------------------------------
     */
     thread_data *t_data = (thread_data *)data;
-    fprintf(stderr, "Begin, mat(%ld)\n", t_data->index_pending);
 
     /** 
      * ------------------------------------------------------------------------------
@@ -22,7 +21,6 @@ void *run(void *data)
     I_ASSERT_P(pthread_mutex_unlock(&d.mutex) != 0, "pthread_mutex_unlock(&d.mutex)");
 
     // Demarrage des calcules.
-    fprintf(stderr, "-> mat(%ld)\n", t_data->index_pending);
     int line = t_data->i;
     int column = t_data->j;
     long int result = 0;
@@ -30,7 +28,6 @@ void *run(void *data)
         result += d.m_1[t_data->index_matrix].mat[line][_i] * d.m_2[t_data->index_matrix].mat[_i][column];
     d.m_result[t_data->index_matrix].mat[line][column] = result;
     d.pending[t_data->index_pending] = 0;
-    fprintf(stderr, "<- mat(%ld): %ld\n", t_data->index_pending, result);
 
     /** 
      * ------------------------------------------------------------------------------
