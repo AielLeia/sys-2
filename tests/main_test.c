@@ -28,6 +28,8 @@ int test_get_pending_function()
 
 int main(int argc, char *argv[])
 {
+    struct timeval tv_start, tv_end;
+    gettimeofday(&tv_start, NULL);
     I_ASSERT_I(argc < 2, "Usage: ./prog filetest");
     int result = build_matrices(&d, argv[1]);
 
@@ -70,5 +72,7 @@ int main(int argc, char *argv[])
         printf("OK\n");
 
     free(d.pending);
+    gettimeofday(&tv_end, NULL);
+    printf("Differente: %ld\n", tv_end.tv_usec - tv_start.tv_usec);
     return EXIT_SUCCESS;
 }

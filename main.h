@@ -86,6 +86,13 @@
 
 /** 
  * --------------------------------------------------------------------------------------
+ * Inclusion de la bibliothèque permettant la gestion du temps.
+ * --------------------------------------------------------------------------------------
+*/
+#include <sys/time.h>
+
+/** 
+ * --------------------------------------------------------------------------------------
  * Vérifie les conditions associées à des erreurs qui serons spéficier par la 
  * constante errno, par exemple open revoie -1 en cas d'erreur le code d'erreur
  * est spéficier dans la constante errno et peut être afficher par la fonction
